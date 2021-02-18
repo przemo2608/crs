@@ -57,11 +57,11 @@ class UserCard extends Component {
   handleCardClick = () => this.setState({ redirect: true });
 
   render() {
-    const { userId, pageContext, username, email, name, surname, removeUser, user} = this.props;
+    const { id, pageContext, username, email, name, surname, removeUser, user} = this.props;
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to={`${pageContext}/${userId}`} />;
+      return <Redirect to={`${pageContext}/${id}`} />;
     }
 
     return (
@@ -76,7 +76,7 @@ class UserCard extends Component {
           <Button onClick={this.handleCardClick} secondary>
             SZCZEGÓŁY
           </Button>
-          {user.role === 'Admin' && <Button onClick={() => removeUser(userId)} secondary>USUŃ</Button>}
+          {user.role === 'Admin' && <Button onClick={() => removeUser(id)} secondary>USUŃ</Button>}
         </InnerWrapper>
       </StyledWrapper>
     );
@@ -86,8 +86,7 @@ class UserCard extends Component {
 UserCard.propTypes = {
   id: PropTypes.number.isRequired,
   pageContext: PropTypes.oneOf(['news', 'workers', 'cars', 'tasks', 'customers']),
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  
 };
 
 UserCard.defaultProps = {
@@ -100,7 +99,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  removeUser: (userId) => dispatch(removeUserAction(userId)),
+  removeUser: (id) => dispatch(removeUserAction(id)),
 });
 
 export default connect(

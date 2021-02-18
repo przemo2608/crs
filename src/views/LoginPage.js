@@ -68,7 +68,7 @@ const LoginPage = ({token, authenticate}) => (
             <Button activecolor="news" type="submit">
               Zaloguj
             </Button>
-             <StyledLink to={routes.register}>Zarejestruj</StyledLink>
+             <StyledLink to={routes.register}>Zarejestruj się jako klient</StyledLink>
           </StyledForm>
         </>
       );

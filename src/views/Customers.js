@@ -17,14 +17,14 @@ class Customers extends Component {
 
     return (
       <GridTemplate>
-        {customers.map(({userId, username, email, name, surname}) => (
+        {customers.map(({id, username, email, name, surname}) => (
           <UserCard
-            userId={userId}
+            id={id}
             username={username}
             email={email}
             name={name}
             surname={surname}
-            key={userId}
+            key={id}
           />
         ))}
       </GridTemplate>
@@ -35,7 +35,7 @@ class Customers extends Component {
 Customers.propTypes = {
   news: PropTypes.arrayOf(
     PropTypes.shape({
-      userId: PropTypes.number.isRequired,
+      Id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
        email: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,

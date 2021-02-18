@@ -28,6 +28,10 @@ export const REMOVE_CUSTOMERS_REQUEST = 'REMOVE_CUSTOMERS_REQUEST';
 export const REMOVE_CUSTOMERS_SUCCESS = 'REMOVE_CUSTOMERS_SUCCESS';
 export const REMOVE_CUSTOMERS_FAILURE = 'REMOVE_CUSTOMERS_FAILURE';
 
+export const WORKERS_REQUEST = 'WORKERS_REQUEST';
+export const WORKERS_SUCCESS = 'WORKERS_SUCCESS';
+export const WORKERS_FAILURE = 'WORKERS_FAILURE';
+
 export const authenticate = (username, password) => dispatch => {
   dispatch({ type: AUTH_REQUEST });
 
@@ -67,6 +71,7 @@ export const createUser = (username, password, role, email, name, surname) => di
     )
      .then(() => {
        dispatch(fetchCustomers());
+       dispatch(fetchWorkers());
     })
     .catch(err => {
       console.log(err);
@@ -144,8 +149,8 @@ console.log(id)
 
   return axios
     .get('https://crs-server.somee.com/api/users/getCustomers', {
-      params: {
-        token: getState().token,
+      headers: {
+        Authorization: getState().token,
       },
     })
     .then(({ data }) => {
@@ -163,20 +168,45 @@ console.log(id)
     });
   };
 
-  export const removeUser = (userId) => (dispatch, getState) => {
+   export const fetchWorkers = () => (dispatch, getState) => {
+  dispatch({ type: WORKERS_REQUEST });
+
+  return axios
+    .get('https://crs-server.somee.com/api/users/getWorkers', {
+      headers: {
+        Authorization: getState().token,
+      },
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: WORKERS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: WORKERS_FAILURE });
+    });
+  };
+
+  export const removeUser = (id) => (dispatch, getState) => {
   dispatch({ type: REMOVE_NEWS_REQUEST });
-console.log(userId)
+console.log(id)
   axios
     .delete('https://crs-server.somee.com/api/users/deleteUser', {
   headers: {
     Authorization: getState().token
   },
   data: {
-    userId: userId
+    userId: id
   }
 })
     .then(() => {
        dispatch(fetchCustomers());
+       dispatch(fetchWorkers());
     })
     .catch(err => {
       console.log(err);

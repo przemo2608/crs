@@ -7,7 +7,7 @@ import withContext from '../../../hoc/withContext';
 import Heading from '../../atoms/Heading/Heading';
 import { connect } from 'react-redux';
 import { createUser as createUserAction } from '../../../actions/index';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 const StyledWrapper = styled.div`
   border-left: 10px solid ${({ theme, activecolor }) => theme[activecolor]};
@@ -44,6 +44,7 @@ const StyledInput = styled(Input)`
 const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
   <StyledWrapper isVisible={isVisible} activecolor={pageContext}>
    {pageContext=='customers' && <Heading big>Dodaj Klienta</Heading>}
+    {pageContext=='workers' && <Heading big>Dodaj Pracownika</Heading>}
     <Formik
       initialValues={{ username: '', password: '', role: 'Customer', email: '', name: '', surname: ''}}
       onSubmit={({ username, password, role, email, name, surname }) => {
@@ -53,6 +54,19 @@ const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
     >
       {({ values, handleChange, handleBlur }) => (
         <StyledForm>
+          {pageContext=='workers' && <> <div id="my-radio-group">Rola</div>
+          <div role="group" aria-labelledby="my-radio-group">
+            <label>
+              <Field type="radio" name="role" value="Mechanic" />
+              Mechanik
+            </label>
+            <label>
+              <Field type="radio" name="role" value="Admin" />
+              Administrator
+            </label>
+            <div>Picked: {values.role}</div>
+          </div>
+</>}
            <StyledInput
               type="text"
               name="username"
@@ -105,7 +119,6 @@ const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
 AddUserBar.propTypes = {
   pageContext: PropTypes.oneOf(['news', 'workers', 'cars', 'tasks', 'customers']),
   isVisible: PropTypes.bool,
-  addItem: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 

@@ -82,7 +82,6 @@ const AddNewsBar = ({ pageContext, isVisible, addNews, handleClose }) => (
 AddNewsBar.propTypes = {
   pageContext: PropTypes.oneOf(['news', 'workers', 'cars', 'tasks', 'customers']),
   isVisible: PropTypes.bool,
-  addItem: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 

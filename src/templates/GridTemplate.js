@@ -109,6 +109,7 @@ class GridTemplate extends Component {
           />}
          {pageContext=='news' && <AddNewsBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
           {pageContext=='customers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
+           {pageContext=='workers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
         </StyledWrapper>
       </AfterLoginTemplate>
     );
