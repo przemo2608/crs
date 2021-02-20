@@ -8,6 +8,7 @@ import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import Buttonicon from '../components/atoms/Buttonicon/Buttonicon';
 import AddNewsBar from '../components/organisms/NewItemBar/AddNewsBar';
 import AddUserBar from '../components/organisms/NewItemBar/AddUserBar';
+import AddCarBar from '../components/organisms/NewItemBar/AddCarBar';
 import plusIcon from '../assets/add.svg';
 import minusIcon from '../assets/minus.svg';
 import withContext from '../hoc/withContext';
@@ -95,6 +96,8 @@ class GridTemplate extends Component {
             {search}
           {pageContext == 'news' &&  <StyledHeading big as="h1"> Aktualności </StyledHeading>}
           {pageContext == 'customers' &&  <StyledHeading big as="h1"> Klienci </StyledHeading>}
+          {pageContext == 'cars' &&  <StyledHeading big as="h1"> Samochody </StyledHeading>}
+          {pageContext == 'workers' &&  <StyledHeading big as="h1"> Mechanicy </StyledHeading>}
           </StyledPageHeader>
          {pageContext!='news'? <StyledGrid>{children}</StyledGrid> : null}
          {pageContext=='news'? <StyledGrid news>{children}</StyledGrid> : null}
@@ -110,6 +113,7 @@ class GridTemplate extends Component {
          {pageContext=='news' && <AddNewsBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
           {pageContext=='customers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
            {pageContext=='workers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
+           {pageContext=='cars' && <AddCarBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
         </StyledWrapper>
       </AfterLoginTemplate>
     );

@@ -32,6 +32,14 @@ export const WORKERS_REQUEST = 'WORKERS_REQUEST';
 export const WORKERS_SUCCESS = 'WORKERS_SUCCESS';
 export const WORKERS_FAILURE = 'WORKERS_FAILURE';
 
+export const CARS_REQUEST = 'CARS_REQUEST';
+export const CARS_SUCCESS = 'CARS_SUCCESS';
+export const CARS_FAILURE = 'CARS_FAILURE';
+
+export const REMOVE_CAR_REQUEST = 'REMOVE_CAR_REQUEST';
+export const REMOVE_CAR_SUCCESS = 'REMOVE_CAR_SUCCESS';
+export const REMOVE_CAR_FAILURE = 'REMOVE_CAR_FAILURE';
+
 export const authenticate = (username, password) => dispatch => {
   dispatch({ type: AUTH_REQUEST });
 
@@ -44,13 +52,15 @@ export const authenticate = (username, password) => dispatch => {
     
     )
     .then(payload => {
-      console.log(payload.data.token);
+      console.log(payload.data);
       dispatch({ type: AUTH_SUCCESS, payload });
       localStorage.setItem('token', payload.data.token);
+      localStorage.setItem('user', payload.data.user.userId);
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: AUTH_FAILURE });
+      alert("logowanie nie powiodło się")
     });
 };
 
@@ -214,3 +224,73 @@ console.log(id)
     });
 };
 
+export const createCar = (carBrand, model, registrationNumber) => (dispatch, getState) => {
+  dispatch({ type: REGISTER_REQUEST });
+
+  return axios
+    .post('https://crs-server.somee.com/api/cars/createCar', {
+      userId: getState().user.userId,
+      carBrand,
+      model,
+      registrationNumber,
+    
+      
+  },
+    
+    )
+     .then(() => {
+       dispatch(fetchCars());
+      
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: REGISTER_FAILURE });
+    });
+};
+
+  export const fetchCars = () => (dispatch, getState) => {
+  dispatch({ type: CARS_REQUEST });
+
+  return axios
+    .get(`https://crs-server.somee.com/api/cars/getCars/${getState().user.userId}`, {
+      headers: {
+        Authorization: getState().token,
+      },
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: CARS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: CARS_FAILURE });
+    });
+  };
+
+  export const removeCar = (id) => (dispatch, getState) => {
+  dispatch({ type: REMOVE_CAR_REQUEST });
+console.log(id)
+  axios
+    .delete('https://crs-server.somee.com/api/cars/deleteCar', {
+  headers: {
+    Authorization: getState().token
+  },
+  data: {
+    userId: getState().user.userId,
+    carId: id
+  }
+})
+    .then(() => {
+       dispatch(fetchCars());
+      
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: REMOVE_CAR_FAILURE });
+    });
+};
