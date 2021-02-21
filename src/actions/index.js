@@ -40,6 +40,10 @@ export const REMOVE_CAR_REQUEST = 'REMOVE_CAR_REQUEST';
 export const REMOVE_CAR_SUCCESS = 'REMOVE_CAR_SUCCESS';
 export const REMOVE_CAR_FAILURE = 'REMOVE_CAR_FAILURE';
 
+export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
+export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
+export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE';
+
 export const authenticate = (username, password) => dispatch => {
   dispatch({ type: AUTH_REQUEST });
 
@@ -224,7 +228,7 @@ console.log(id)
     });
 };
 
-export const createCar = (carBrand, model, registrationNumber) => (dispatch, getState) => {
+export const  createCar = (carBrand, model, registrationNumber) => (dispatch, getState) => {
   dispatch({ type: REGISTER_REQUEST });
 
   return axios
@@ -239,7 +243,7 @@ export const createCar = (carBrand, model, registrationNumber) => (dispatch, get
     
     )
      .then(() => {
-       dispatch(fetchCars());
+       dispatch(fetchCars(localStorage.getItem('user')));
       
     })
     .catch(err => {
@@ -248,11 +252,11 @@ export const createCar = (carBrand, model, registrationNumber) => (dispatch, get
     });
 };
 
-  export const fetchCars = () => (dispatch, getState) => {
+  export const fetchCars = (userId) => (dispatch, getState) => {
   dispatch({ type: CARS_REQUEST });
 
   return axios
-    .get(`https://crs-server.somee.com/api/cars/getCars/${getState().user.userId}`, {
+    .get(`https://crs-server.somee.com/api/cars/getCars/${userId}`, {
       headers: {
         Authorization: getState().token,
       },
@@ -286,11 +290,36 @@ console.log(id)
   }
 })
     .then(() => {
-       dispatch(fetchCars());
+       dispatch(fetchCars(localStorage.getItem('user')));
       
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: REMOVE_CAR_FAILURE });
+    });
+};
+
+
+export const createTask = (title, description, carId, customerId, mechanicId) => (dispatch) => {
+  dispatch({ type: CREATE_TASK_REQUEST });
+
+  return axios
+    .post('https://crs-server.somee.com/api/orders/createOrder', {
+      title,
+      description,
+      carId,
+      customerId,
+      mechanicId
+      
+  },
+    
+    )
+     .then(() => {
+       dispatch(fetchCars());
+      
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: CREATE_TASK_FAILURE });
     });
 };

@@ -8,7 +8,7 @@ import { fetchCars } from '../actions/index';
 class Cars extends Component {
   componentDidMount() {
     const { GetCars } = this.props;
-    GetCars();
+    GetCars(localStorage.getItem('user'));
   }
 
 
@@ -51,7 +51,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  GetCars: () => dispatch(fetchCars()),
+  GetCars: (userId) => dispatch(fetchCars(userId)),
 });
 
 export default connect(

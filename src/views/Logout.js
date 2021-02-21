@@ -9,6 +9,8 @@ const LogoutComponent = ({logout}) =>{
    
       logout()
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('state');
        return <Redirect to={routes.login} />
     }
 
