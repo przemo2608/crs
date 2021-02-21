@@ -3,6 +3,7 @@ export const routes = {
     news: "/news",
     cars: "/cars",
     tasks: "/tasks",
+    admintasks: "/admintasks",
     workers: "/workers",
     customers: "/customers",
     new: "/news/:id",

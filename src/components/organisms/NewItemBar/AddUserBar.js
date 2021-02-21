@@ -64,7 +64,7 @@ const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
               <Field type="radio" name="role" value="Admin" />
               Administrator
             </label>
-            <div>Picked: {values.role}</div>
+            
           </div>
 </>}
            <StyledInput

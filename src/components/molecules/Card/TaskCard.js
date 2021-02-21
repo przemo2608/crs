@@ -7,7 +7,7 @@ import Heading from '../../atoms/Heading/Heading';
 import Button from '../../atoms/Button/Button';
 import withContext from '../../../hoc/withContext';
 import { connect } from 'react-redux';
-import { removeUser as removeUserAction } from '../../../actions/index';
+import { removeCar as removeCarAction } from '../../../actions/index';
 
 const StyledWrapper = styled.div`
   min-height: 380px;
@@ -49,46 +49,41 @@ const StyledHeading = styled(Heading)`
 
 
 
-class UserCard extends Component {
-  state = {
-    redirect: false,
-  };
+class TaskCard extends Component {
 
- 
+
+  
 
   render() {
-    const { id, pageContext, username, email, name, surname, removeUser, user} = this.props;
-    const { redirect } = this.state;
+    const { id, pageContext, title, description, status, carBrand, carModel} = this.props;
+    
 
-    if (redirect) {
-      return <Redirect to={`${pageContext}/${id}`} />;
-    }
+    
 
     return (
       <StyledWrapper>
         <InnerWrapper  activeColor={pageContext}>
-          <StyledHeading>{username}</StyledHeading>
+          <StyledHeading>{title}</StyledHeading>
         </InnerWrapper>
         <InnerWrapper flex>
-          <Paragraph>E-mail: {email}</Paragraph>
-          <Paragraph>Imię: {name}</Paragraph>
-          <Paragraph>Nazwisko: {surname}</Paragraph>
-          
-          {user.role === 'Admin' && <Button onClick={() => removeUser(id)} secondary>USUŃ</Button>}
+          <Paragraph>Opis: {description}</Paragraph>
+           <Paragraph>Status zlecenia: {status}</Paragraph>
+            <Paragraph>Samochód: {carBrand} {carModel}</Paragraph>
+            
         </InnerWrapper>
       </StyledWrapper>
     );
   }
 }
 
-UserCard.propTypes = {
+TaskCard.propTypes = {
   id: PropTypes.number.isRequired,
   pageContext: PropTypes.oneOf(['news', 'workers', 'cars', 'tasks', 'customers']),
-  
+ 
 };
 
-UserCard.defaultProps = {
-  pageContext: 'news',
+TaskCard.defaultProps = {
+  pageContext: 'tasks',
 };
 
 const mapStateToProps = state => {
@@ -97,10 +92,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  removeUser: (id) => dispatch(removeUserAction(id)),
+  
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withContext(UserCard));
+)(withContext(TaskCard));

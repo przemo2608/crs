@@ -44,6 +44,14 @@ export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
 export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE';
 
+export const USER_TASKS_REQUEST = 'USER_TASKS_REQUEST';
+export const USER_TASKS_SUCCESS = 'USER_TASKS_SUCCESS';
+export const USER_TASKS_FAILURE = 'USER_TASKS_FAILURE';
+
+export const MECHANIC_TASKS_REQUEST = 'MECHANIC_TASKS_REQUEST';
+export const MECHANIC_TASKS_SUCCESS = 'MECHANIC_TASKS_SUCCESS';
+export const MECHANIC_TASKS_FAILURE = 'MECHANIC_TASKS_FAILURE';
+
 export const authenticate = (username, password) => dispatch => {
   dispatch({ type: AUTH_REQUEST });
 
@@ -252,7 +260,7 @@ export const  createCar = (carBrand, model, registrationNumber) => (dispatch, ge
     });
 };
 
-  export const fetchCars = (userId) => (dispatch, getState) => {
+  export const fetchCars = (userId) => ( dispatch, getState) => {
   dispatch({ type: CARS_REQUEST });
 
   return axios
@@ -315,7 +323,7 @@ export const createTask = (title, description, carId, customerId, mechanicId) =>
     
     )
      .then(() => {
-       dispatch(fetchCars());
+       alert('dodano zlecenie')
       
     })
     .catch(err => {
@@ -323,3 +331,52 @@ export const createTask = (title, description, carId, customerId, mechanicId) =>
       dispatch({ type: CREATE_TASK_FAILURE });
     });
 };
+
+export const fetchUserTasks = (userId) => ( dispatch, getState) => {
+  dispatch({ type: USER_TASKS_REQUEST });
+
+  return axios
+    .get(`https://crs-server.somee.com/api/orders/getOrdersForCustomer/${userId}`, {
+      headers: {
+        Authorization: getState().token,
+      },
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: USER_TASKS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: USER_TASKS_FAILURE });
+    });
+  };
+
+
+  export const fetchMechanicTasks = (userId) => ( dispatch, getState) => {
+  dispatch({ type: MECHANIC_TASKS_REQUEST });
+
+  return axios
+    .get(`https://crs-server.somee.com/api/orders/getOrdersForWorker/${userId}`, {
+      headers: {
+        Authorization: getState().token,
+      },
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: MECHANIC_TASKS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: MECHANIC_TASKS_FAILURE });
+    });
+  };

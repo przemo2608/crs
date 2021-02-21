@@ -12,6 +12,7 @@ import AddCarBar from '../components/organisms/NewItemBar/AddCarBar';
 import plusIcon from '../assets/add.svg';
 import minusIcon from '../assets/minus.svg';
 import withContext from '../hoc/withContext';
+import { connect } from 'react-redux';
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -73,10 +74,7 @@ class GridTemplate extends Component {
     search: null
   };
 
-    searchSpace=(event)=>{
-    let keyword = event.target.value;
-    this.setState({search:keyword})
-  }
+ 
 
   toggleNewItemBar = () => {
     this.setState(prevState => ({
@@ -85,22 +83,23 @@ class GridTemplate extends Component {
   };
 
   render() {
-    const { children, pageContext } = this.props;
-    const { isNewItemBarVisible, search } = this.state;
+    const { children, pageContext, user } = this.props;
+    const { isNewItemBarVisible  } = this.state;
 
     return (
       <AfterLoginTemplate>
         <StyledWrapper>
           <StyledPageHeader>
-            <Input search placeholder="Search" onChange={(e)=>this.searchSpace(e)}/>
-            {search}
           {pageContext == 'news' &&  <StyledHeading big as="h1"> Aktualności </StyledHeading>}
           {pageContext == 'customers' &&  <StyledHeading big as="h1"> Klienci </StyledHeading>}
-          {pageContext == 'cars' &&  <StyledHeading big as="h1"> Samochody </StyledHeading>}
+          {pageContext == 'cars' &&  <StyledHeading big as="h1"> Samochody {user.username}</StyledHeading>}
           {pageContext == 'workers' &&  <StyledHeading big as="h1"> Mechanicy </StyledHeading>}
+           {pageContext == 'tasks' && user.role!='Customer' ? <StyledHeading big as="h1"> Zlecenia </StyledHeading>: null}
+            {pageContext == 'tasks' && user.role=='Customer' ? <StyledHeading big as="h1"> Historia napraw </StyledHeading>: null}
           </StyledPageHeader>
          {pageContext!='news'? <StyledGrid>{children}</StyledGrid> : null}
          {pageContext=='news'? <StyledGrid news>{children}</StyledGrid> : null}
+        {pageContext!='tasks' && user.role=='Admin'? <>
          {isNewItemBarVisible ? <StyledButtonIcon
             onClick={this.toggleNewItemBar}
             icon={minusIcon}
@@ -110,7 +109,19 @@ class GridTemplate extends Component {
             icon={plusIcon}
             activecolor={pageContext}
           />}
-         {pageContext=='news' && <AddNewsBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
+          </>: null}
+           {pageContext=='cars' && user.role=='Customer'? <>
+         {isNewItemBarVisible ? <StyledButtonIcon
+            onClick={this.toggleNewItemBar}
+            icon={minusIcon}
+            activecolor={pageContext}
+          /> :  <StyledButtonIcon
+            onClick={this.toggleNewItemBar}
+            icon={plusIcon}
+            activecolor={pageContext}
+          />}
+          </>: null}
+         {pageContext=='news' && user.role=='Admin' ? <AddNewsBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> : null }
           {pageContext=='customers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
            {pageContext=='workers' && <AddUserBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
            {pageContext=='cars' && <AddCarBar handleClose={this.toggleNewItemBar} isVisible={isNewItemBarVisible} /> }
@@ -129,4 +140,12 @@ GridTemplate.defaultProps = {
   pageContext: 'news',
 };
 
-export default withContext(GridTemplate);
+const mapStateToProps = state => {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+)(withContext(GridTemplate));

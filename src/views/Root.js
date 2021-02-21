@@ -13,6 +13,7 @@ import {routes} from '../routes/index';
 import DetailsPage from './DetailsPage';
 import LoginPage from '../views/LoginPage';
 import RegisterPage from '../views/RegisterPage';
+import AdminTasks from '../views/AdminTasks';
 
 
 const Root = () =>(
@@ -32,6 +33,7 @@ const Root = () =>(
        <Route exact path={routes.cars} component={Cars}/>
        <Route path={routes.car} component={DetailsPage}/>
        <Route exact path={routes.tasks} component={Tasks}/>
+        <Route exact path={routes.admintasks} component={AdminTasks} />
        <Route path={routes.task} component={DetailsPage}/>
      </Switch>
       </MainTemplate> 

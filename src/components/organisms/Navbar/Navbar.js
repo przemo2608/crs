@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import Buttonicon from '../../atoms/Buttonicon/Buttonicon';
 import newsIcon from '../../../assets/news.svg';
 import carsIcon from '../../../assets/car.svg';
+import { connect } from 'react-redux';
 import customersIcon from '../../../assets/user.svg';
 import logoutIcon from '../../../assets/logout.svg';
 import tasksIcon from '../../../assets/tasks.svg';
@@ -49,25 +50,25 @@ const StyledLogoLink = styled(NavLink)`
 `;
 
 
-const Navbar = ({pageContext}) =>(
+const Navbar = ({pageContext, user}) =>(
     <Wrapper color={pageContext}>
         <StyledLogoLink to="/" />
        <StyledLinksList>
            <li>
            <Buttonicon as={NavLink} to="/news" icon={newsIcon} activeclass="active"/>
            </li>
-           <li>
+          {user.role=='Customer' && <li>
            <Buttonicon as={NavLink} to="/cars" icon={carsIcon} activeclass="active"/>
-           </li>
+           </li>}
            <li>
            <Buttonicon as={NavLink} to="/tasks" icon={tasksIcon} activeclass="active"/>
            </li>
-           <li>
+          {user.role=='Admin' && <li>
            <Buttonicon as={NavLink} to="/workers" icon={workersIcon} activeclass="active"/>
-           </li>
-           <li>
+           </li>}
+          {user.role!='Customer' && <li>
            <Buttonicon as={NavLink} to="/customers" icon={customersIcon} activeclass="active"/>
-           </li>
+           </li>}
        </StyledLinksList>
        <StyledLogoutButton as={NavLink} to="/logout" icon={logoutIcon} />
     </Wrapper>
@@ -81,4 +82,12 @@ Navbar.defaultProps = {
   pageContext: 'news',
 };
 
-export default withContext(Navbar);
+const mapStateToProps = state => {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+)(withContext(Navbar));
