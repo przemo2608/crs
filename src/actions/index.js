@@ -94,10 +94,12 @@ export const createUser = (username, password, role, email, name, surname) => di
      .then(() => {
        dispatch(fetchCustomers());
        dispatch(fetchWorkers());
+       alert('dodano użytkownika')
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: REGISTER_FAILURE });
+      alert('nie udało się')
     });
 };
 

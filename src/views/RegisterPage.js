@@ -37,8 +37,9 @@ const RegisterPage = ({token, createUser}) => (
   <AuthTemplate>
     <Formik
       initialValues={{ username: '', password: '', role: 'Customer', email: '', name: '', surname: ''}}
-      onSubmit={({ username, password, role, email, name, surname }) => {
+      onSubmit={({ username, password, role, email, name, surname },{resetForm}) => {
         createUser(username, password, role, email, name, surname);
+         resetForm({})
       }}
     >
       {({ handleChange, handleBlur, values }) => {
