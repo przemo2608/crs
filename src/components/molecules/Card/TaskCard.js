@@ -7,7 +7,7 @@ import Heading from '../../atoms/Heading/Heading';
 import Button from '../../atoms/Button/Button';
 import withContext from '../../../hoc/withContext';
 import { connect } from 'react-redux';
-import { removeCar as removeCarAction } from '../../../actions/index';
+import { changeTaskStatus as changeTaskStatusAction } from '../../../actions/index';
 
 const StyledWrapper = styled.div`
   min-height: 380px;
@@ -55,7 +55,7 @@ class TaskCard extends Component {
   
 
   render() {
-    const { id, pageContext, title, description, status, carBrand, carModel} = this.props;
+    const { id, pageContext, title, description, status, carBrand, carModel, user, changeTaskStatus} = this.props;
     
 
     
@@ -69,7 +69,7 @@ class TaskCard extends Component {
           <Paragraph>Opis: {description}</Paragraph>
            <Paragraph>Status zlecenia: {status}</Paragraph>
             <Paragraph>Samochód: {carBrand} {carModel}</Paragraph>
-            
+              {user.role === 'Mechanic' && <Button onClick={() => changeTaskStatus(id)} secondary>ZAKOŃCZ</Button>}
         </InnerWrapper>
       </StyledWrapper>
     );
@@ -91,8 +91,9 @@ const mapStateToProps = state => {
   return { user };
 };
 
+
 const mapDispatchToProps = dispatch => ({
-  
+  changeTaskStatus: (id) => dispatch(changeTaskStatusAction(id)),
 });
 
 export default connect(

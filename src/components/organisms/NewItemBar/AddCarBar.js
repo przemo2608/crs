@@ -38,7 +38,8 @@ const StyledTextArea = styled(Input)`
 `;
 
 const StyledInput = styled(Input)`
-  margin-top: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 `;
 
 const AddCarBar = ({ pageContext, isVisible, createCar, handleClose }) => (
@@ -47,9 +48,10 @@ const AddCarBar = ({ pageContext, isVisible, createCar, handleClose }) => (
    
     <Formik
       initialValues={{ carBrand: '', model: '', registrationNumber: ''}}
-      onSubmit={({ carBrand, model, registrationNumber }) => {
+      onSubmit={({ carBrand, model, registrationNumber }, {resetForm}) => {
         createCar(carBrand, model, registrationNumber);
         handleClose();
+        resetForm({})
       }}
     >
       {({ values, handleChange, handleBlur }) => (

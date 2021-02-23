@@ -52,6 +52,14 @@ export const MECHANIC_TASKS_REQUEST = 'MECHANIC_TASKS_REQUEST';
 export const MECHANIC_TASKS_SUCCESS = 'MECHANIC_TASKS_SUCCESS';
 export const MECHANIC_TASKS_FAILURE = 'MECHANIC_TASKS_FAILURE';
 
+export const ALL_CARS_REQUEST = 'ALL_CARS_REQUEST';
+export const ALL_CARS_SUCCESS = 'ALL_CARS_SUCCESS';
+export const ALL_CARS_FAILURE = 'ALL_CARS_FAILURE';
+
+export const CHANGE_TASK_REQUEST = 'CHANGE_TASK_REQUEST';
+export const CHANGE_TASK_SUCCESS = 'CHANGE_TASK_SUCCESS';
+export const CHANGE_TASK_FAILURE = 'CHANGE_TASK_FAILURE';
+
 export const authenticate = (username, password) => dispatch => {
   dispatch({ type: AUTH_REQUEST });
 
@@ -134,15 +142,17 @@ export const fetchNews = () => (dispatch, getState) => {
 
   return axios
     .post('https://crs-server.somee.com/api/news/createNews', {
-      token: getState().token,
+      Authorization: getState().token,
       ...newsContent,
     })
     .then(() => {
       dispatch(fetchNews())
+      alert("dodano news")
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: ADD_NEWS_FAILURE });
+       alert("nie dodano newsa")
     });
 }; 
 
@@ -254,11 +264,13 @@ export const  createCar = (carBrand, model, registrationNumber) => (dispatch, ge
     )
      .then(() => {
        dispatch(fetchCars(localStorage.getItem('user')));
+       alert('dodano samochód')
       
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: REGISTER_FAILURE });
+      alert('nie udało się dodać samochodu')
     });
 };
 
@@ -325,12 +337,13 @@ export const createTask = (title, description, carId, customerId, mechanicId) =>
     
     )
      .then(() => {
-       alert('dodano zlecenie')
+       alert('dodano zlecenie dla mechanika')
       
     })
     .catch(err => {
       console.log(err);
       dispatch({ type: CREATE_TASK_FAILURE });
+       alert('nie udało się')
     });
 };
 
@@ -382,3 +395,47 @@ export const fetchUserTasks = (userId) => ( dispatch, getState) => {
       dispatch({ type: MECHANIC_TASKS_FAILURE });
     });
   };
+
+  export const fetchAllCars = () => (dispatch, getState) => {
+  dispatch({ type: ALL_CARS_REQUEST });
+
+  return axios
+    .get('https://crs-server.somee.com/api/cars/getAllCars', {
+      params: {
+        token: getState().token,
+      },
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: ALL_CARS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: ALL_CARS_FAILURE });
+    });
+  };
+
+    export const changeTaskStatus = (id) => (dispatch, getState) => {
+  dispatch({ type: CHANGE_TASK_REQUEST });
+console.log(id)
+  axios
+    .put('https://crs-server.somee.com/api/orders/changeOrderStatus', {
+       orderId: id,
+      Status: "zakonczone",
+ 
+ 
+},)
+    .then(() => {
+       dispatch(fetchMechanicTasks(localStorage.getItem('user')));
+      
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: CHANGE_TASK_FAILURE });
+    });
+};

@@ -31,7 +31,7 @@ const InnerWrapper = styled.div`
     css`
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+     
     `}
 `;
 
@@ -70,11 +70,9 @@ class CarCard extends Component {
           <StyledHeading>{carBrand}</StyledHeading>
         </InnerWrapper>
         <InnerWrapper flex>
-          <Paragraph>{model}</Paragraph>
-           <Paragraph>{registrationNumber}</Paragraph>
-          <Button onClick={this.handleCardClick} secondary>
-            SZCZEGÓŁY
-          </Button>
+          <Paragraph>Model:  {model}</Paragraph>
+           <Paragraph>Numer rejestracyjny: {registrationNumber}</Paragraph>
+        
           {user.role === 'Customer' && <Button onClick={() => removeCar(id)} secondary>USUŃ</Button>}
         </InnerWrapper>
       </StyledWrapper>

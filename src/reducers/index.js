@@ -1,4 +1,4 @@
-import { CUSTOMERS_SUCCESS, AUTH_SUCCESS, WORKERS_SUCCESS, NEWS_SUCCESS,  CARS_SUCCESS, USER_TASKS_SUCCESS, MECHANIC_TASKS_SUCCESS  } from '../actions/index';
+import { CUSTOMERS_SUCCESS, AUTH_SUCCESS, WORKERS_SUCCESS, NEWS_SUCCESS,  CARS_SUCCESS, USER_TASKS_SUCCESS, MECHANIC_TASKS_SUCCESS, ALL_CARS_SUCCESS  } from '../actions/index';
 
 
 const initialState = {
@@ -16,6 +16,11 @@ const rootReducer = (state = initialState, action) => {
                 return {
                      ...state,
                       cars: [...action.payload.data],
+      };
+       case ALL_CARS_SUCCESS:
+                return {
+                     ...state,
+                      allcars: [...action.payload.data],
       };
       case USER_TASKS_SUCCESS:
                 return {

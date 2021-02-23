@@ -23,14 +23,15 @@ class Tasks extends Component {
 
     return (
       <GridTemplate>
-        {tasks.map(({title, description, status, carBrand, carModel}) => (
+        {tasks.map(({orderId, title, description, status, carBrand, carModel}) => (
           <TaskCard
+            id={orderId}
             title={title}
             description={description}
             status={status}
             carBrand={carBrand}
             carModel={carModel}
-            key={title}
+            key={orderId}
           />
         ))}
       </GridTemplate>

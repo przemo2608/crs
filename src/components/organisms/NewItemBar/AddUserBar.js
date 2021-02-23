@@ -38,7 +38,8 @@ const StyledTextArea = styled(Input)`
 `;
 
 const StyledInput = styled(Input)`
-  margin-top: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 `;
 
 const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
@@ -47,9 +48,10 @@ const AddUserBar = ({ pageContext, isVisible, createUser, handleClose }) => (
     {pageContext=='workers' && <Heading big>Dodaj Pracownika</Heading>}
     <Formik
       initialValues={{ username: '', password: '', role: 'Customer', email: '', name: '', surname: ''}}
-      onSubmit={({ username, password, role, email, name, surname }) => {
+      onSubmit={({ username, password, role, email, name, surname }, {resetForm}) => {
         createUser(username, password, role, email, name, surname);
         handleClose();
+        resetForm({})
       }}
     >
       {({ values, handleChange, handleBlur }) => (
