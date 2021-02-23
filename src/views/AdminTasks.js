@@ -30,6 +30,11 @@ const StyledField = styled(Field)`
 
 `;
 
+const StyledButton = styled(Button)`
+  margin-top: 15px;
+  
+`;
+
 class AdminTasks extends Component {
   componentDidMount() {
     const { GetCustomers, GetWorkers, GetAllCars} = this.props;
@@ -50,9 +55,9 @@ class AdminTasks extends Component {
         <GridTemplate>
        <Formik
       initialValues={{ title: '', description: '', carId: null, customerId: null, mechanicId: null}}
-      onSubmit={({ title, description, carId, customerId, mechanicId }) => {
+      onSubmit={({ title, description, carId, customerId, mechanicId }, {resetForm}) => {
         createTask(title, description, parseInt(carId), parseInt(customerId), parseInt(mechanicId));
-        
+        resetForm({})
       }}
       
     >
@@ -93,9 +98,9 @@ class AdminTasks extends Component {
             {allcars.filter(car => car.userId == values.customerId).map((car =>  <option value={car.id}>{car.carBrand} {car.model}</option>))}
            </Field>}
            
-          <Button type="submit" activecolor="tasks">
+          <StyledButton type="submit" activecolor="tasks">
             Dodaj
-          </Button>
+          </StyledButton>
           
         </StyledForm>
       )}
